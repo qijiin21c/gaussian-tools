@@ -1,6 +1,6 @@
 ---
 name: opt-convergence
-description: This skill should be used when the user asks to "help geometry optimization converge", "fix optimization oscillation", "Optimization stopped", "Lnk1e in l9999", "opt=calcall", "opt=gdiis", "优化不收敛", "优化震荡", "when to use B3LYP optimization", "B3LYP geometry optimization appropriate", "B3LYP-D3", "B3LYP transition metal", "B3LYP conjugated system", "B3LYP weak interaction", "B3LYP excited state", "B3LYP cluster", or mentions Gaussian geometry optimization convergence issues, or asks about whether B3LYP is appropriate for optimizing a particular type of system.
+description: This skill should be used when the user asks to "help geometry optimization converge", "fix optimization oscillation", "Optimization stopped", "Lnk1e in l9999", "opt=calcall", "opt=gdiis", "优化不收敛", "优化震荡", "when to use B3LYP optimization", "B3LYP geometry optimization appropriate", "B3LYP-D3", "B3LYP transition metal", "B3LYP conjugated system", "B3LYP weak interaction", "B3LYP excited state", "B3LYP cluster", "basis set for optimization", "optimization basis set", "频率计算需要大基组吗", "opt need large basis set", or mentions Gaussian geometry optimization convergence issues, basis set selection for opt/freq, or asks about whether B3LYP is appropriate for optimizing a particular type of system.
 version: 0.1.0
 ---
 
@@ -209,6 +209,67 @@ The theory/basis should not differ too much from the target level, or the PES mi
 - If IEFPCM also fails and solvent is not absolutely necessary, try optimization in vacuum.
 - Optimization and single-point calculations do NOT need to use the same solvent model. It is fine to optimize with IEFPCM (or vacuum) and then compute single-point energy with SMD.
 
+## Basis set selection for optimization and frequency
+
+**Core principle:** Geometry optimization and frequency results are much LESS sensitive to basis set size than energy calculations. Using a large basis set for opt/freq wastes significant time with minimal accuracy gain.
+
+### Evidence: HF molecule basis set sensitivity
+
+| Basis set | Bond length (Å) | Error | Frequency (cm⁻¹) | Error | Energy (Hartree) | Error |
+|-----------|----------------|-------|-------------------|-------|------------------|-------|
+| def2-SVP | 1.3940 | **0.3%** | 1057.0 | **0.13%** | -199.46122 | **26.4 kJ/mol (4.5%)** |
+| def2-TZVP | 1.3896 | 0.02% | 1055.3 | 0.03% | -199.51145 | 0.4 kJ/mol (0.07%) |
+| def2-TZVPP | 1.3894 | 0.01% | 1055.4 | 0.02% | -199.51351 | 0.2 kJ/mol (0.03%) |
+| def2-QZVP | 1.3893 | — | 1055.6 | — | -199.51457 | — |
+
+Bond length and frequency errors at def2-SVP level are negligible. Energy error is 26.4 kJ/mol — but the energy is computed at the same level as the geometry, not used as a high-accuracy single-point.
+
+### Recommendation
+
+**def2-SVP or 6-31G\*\* (double-zeta with polarization) is sufficient for opt+freq for >95% of organic systems.**
+
+The improvement in geometry and frequency from def2-SVP to def2-QZVP is far smaller than the intrinsic error of the DFT functional itself. JCTC 2023 systematic test (DOI: 10.1021/acs.jctc.3c00388) confirms: basis set size has minimal impact on geometry accuracy compared to functional choice.
+
+### What NOT to go below
+
+| Basis set | Acceptable for opt? | Why |
+|-----------|-------------------|-----|
+| def2-SV(P) | Barely — borderline | Only H has polarization; heavy atoms don't. Noticeably worse than def2-SVP |
+| 6-31G (no polarization) | **NO** | Completely inadequate — no polarization on any atom |
+| STO-3G | **Absolutely not** | Qualitatively wrong geometries |
+
+**Hydrogen polarization is important:** def2-SV(P) vs def2-SVP shows noticeable degradation. Never use 6-31G without any polarization for opt/freq.
+
+### Exceptions: when larger basis IS needed for opt
+
+| Case | Minimum basis for opt | Reason |
+|------|---------------------|--------|
+| **Transition metal complexes (coordination bonds)** | def2-TZVP or def2-TZVPP | def2-SVP vs def2-TZVP difference in metal-ligand bond length is significant |
+| **Large conjugated systems with delocalization** | 6-311G\* or def-TZVP | 18-carbon ring (sobereva.com/515): def2-SVP gives wrong bond alternation pattern |
+| **High-precision vibrational frequencies** | def2-TZVP | When frequency accuracy is critical (e.g., isotope effect studies) |
+| **Raman/ROA intensity calculation** | def2-TZVP + diffuse | See two-step approach below |
+
+### Raman/ROA two-step approach
+
+For Raman and ROA calculations where polarizability derivatives are sensitive to basis set:
+
+1. **Optimization + frequency (no diffuse):** B3LYP-D3(BJ)/def2-SVP — get structure and thermochemistry
+2. **Polarizability derivative (with diffuse):** B3LYP-D3(BJ)/def2-TZVP + diffuse — compute Raman/ROA intensities
+
+This separates the geometry task (insensitive to basis) from the property task (sensitive to basis).
+
+### CCSD(T) energy + DFT opt/freq pairing
+
+A common and well-justified pattern:
+- **Optimization + frequency:** DFT/def2-SVP (e.g., B3LYP-D3(BJ)/def2-SVP)
+- **Single-point energy:** CCSD(T)/def2-TZVP or larger
+
+**Justification:** Comput. Theor. Chem., 1200, 113249 (2021) tested DFT geometry + CCSD(T) energy across multiple systems. DFT-optimized geometries are close enough to CCSD(T) geometries that the energy difference from using DFT vs CCSD(T) geometry is negligible compared to the overall accuracy gain of CCSD(T) over DFT energy.
+
+### Frequency thermodynamics: quasi-RRHO matters more than basis set
+
+For low-frequency modes (<100 cm⁻¹), the harmonic oscillator approximation breaks down. Quasi-RRHO corrections (treating low-frequency modes as hindered rotors) can change free energy by several kcal/mol — far more than basis set effects on frequency. See the small-imag-freq skill for handling this.
+
 ## Transition state optimization
 
 Transition state (TS) optimization is also a geometry optimization process, but toward a first-order saddle point rather than a minimum.
@@ -292,3 +353,4 @@ For detailed keyword reference and failure patterns, consult:
 - **`references/opt-strategies.md`** — Detailed explanation of every optimization keyword
 - **`references/common-failures.md`** — Common failure patterns with before/after examples
 - **`references/b3lyp-appropriateness.md`** — When to use B3LYP for optimization: weak interactions, organic molecules, transition metals, large conjugated systems, excited states, transition states, clusters, and special cases ([IF6]-, annulenes, carbon ring). DFT-D3 necessity and benefits. B3LYP-D3(BJ) as universal default recommendation. Based on sobereva.com/557
+- **`references/basis-for-opt-freq.md`** — Why opt/freq don't need large basis sets: HF molecule sensitivity data, hydrogen polarization importance, exceptions (TM coordination bonds, conjugated systems), Raman/ROA two-step approach, CCSD(T)+DFT pairing justification. Based on sobereva.com/387
