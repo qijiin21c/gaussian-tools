@@ -133,3 +133,4 @@ For detailed methodology and comprehensive coverage, consult:
 
 - **`references/functional-details.md`** — Detailed commentary on every major functional, double-hybrid selection, excited-state functional selection
 - **`references/practical-tips.md`** — Practical computation tips: ORCA vs Gaussian, program recommendations, when to switch functionals, CCSD(T) usage
+- **`references/non-built-in-methods.md`** — How to use non-built-in functionals and methods in Gaussian via IOp: custom functional definition rules (IOp(3/76-78)), SCS-MP2/SCSN-MP2/MP2.5, B3LYP variants (B3LYP*, VWN5-B3LYP), PBE0 variants (PBE0-1/3, PBE38), range-separated ω tuning, QTP17, double-hybrid customization (B2GP-PLYP, DSD-PBEP86-D3(BJ), revDSD), CRITICAL warning about IOp only applying to first step in multi-step tasks
