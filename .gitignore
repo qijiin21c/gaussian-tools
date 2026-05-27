@@ -1,0 +1,7 @@
+jobs/fort.*
+jobs/Gau-*
+jobs/*.chk
+jobs/*.out
+jobs/*.log
+jobs/*.rwf
+scratch/
