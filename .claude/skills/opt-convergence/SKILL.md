@@ -1,6 +1,6 @@
 ---
 name: opt-convergence
-description: This skill should be used when the user asks to "help geometry optimization converge", "fix optimization oscillation", "Optimization stopped", "Lnk1e in l9999", "opt=calcall", "opt=gdiis", "优化不收敛", "优化震荡", or mentions Gaussian geometry optimization convergence issues including oscillation, exceeding step limits, and transition state optimization failures.
+description: This skill should be used when the user asks to "help geometry optimization converge", "fix optimization oscillation", "Optimization stopped", "Lnk1e in l9999", "opt=calcall", "opt=gdiis", "优化不收敛", "优化震荡", "when to use B3LYP optimization", "B3LYP geometry optimization appropriate", "B3LYP-D3", "B3LYP transition metal", "B3LYP conjugated system", "B3LYP weak interaction", "B3LYP excited state", "B3LYP cluster", or mentions Gaussian geometry optimization convergence issues, or asks about whether B3LYP is appropriate for optimizing a particular type of system.
 version: 0.1.0
 ---
 
@@ -221,9 +221,74 @@ All methods for minimum optimization apply to TS optimization as well. However:
 2. **Hessian quality is much more critical for TS** — Prioritize `calcall` or `recalc=3`. For small systems where Hessian computation is not too expensive, always use `calcall` or `recalc` for difficult TS searches to reduce repeated attempts.
 3. **QST2 method** — Generates TS guess from reactant and product structures via interpolation. The guess is often unreasonable — worse than what a chemically intuitive user can manually build. Generally not recommended. If QST2 heads in a wrong direction, immediately abandon it and use `opt=TS`.
 
+## When to use B3LYP for geometry optimization
+
+B3LYP (1994) is obsolete for single-point energy calculations — but it remains practical for geometry optimization due to:
+1. **Fastest among hybrid functionals** in Gaussian — simple functional form vs. complex M06-2X or range-separated functionals
+2. **Low grid sensitivity** — converges on coarse grids; `int=fine` (cheaper than `ultrafine`) often suffices. Modern meta-hybrids (especially M06-2X) require `ultrafine` or higher.
+3. **Massive literature precedent** — widely accepted, rarely challenged by reviewers.
+
+**Strong recommendation:** Always add DFT-D3 dispersion correction: `B3LYP-D3(BJ)`. It's free (no extra cost), improves accuracy universally, and eliminates reviewer criticism. See sobereva.com/413 on when D3 is needed.
+
+### B3LYP appropriateness by system type
+
+| System / Task | Use B3LYP? | Recommendation |
+|---------------|-----------|---------------|
+| **Organic molecules (no weak interactions, no large conjugation)** | Yes | `B3LYP-D3(BJ)/def2-SVP` — safe and well-validated |
+| **Weak interaction systems** | Only with D3 | `B3LYP-D3(BJ)` — essential; bare B3LYP fails completely for dispersion |
+| **Transition metal complexes (general)** | Acceptable but not optimal | TPSSh often outperforms for metal-ligand bond lengths |
+| **Transition metal complexes (metal-metal bonds)** | **NO** | Use pure functionals (BP86, TPSS, PBE) — B3LYP gives qualitatively wrong bond lengths |
+| **Large π-conjugated systems** | **NO** | B3LYP self-interaction error overdelocalizes, forces planarity, equalizes bond lengths. Use wB97XD or M06-2X |
+| **Excited state optimization** | Not recommended | PBE0 or wB97XD perform better. B3LYP fails for CT state optimization |
+| **Transition state (organic reactions)** | Acceptable | wB97XD or M06-2X more accurate, but B3LYP is fine if structure looks reasonable |
+| **Transition state (radical reactions)** | Caution | B3LYP may give qualitatively wrong TS geometry (e.g., F+H₂→HF+H) |
+| **Carbon clusters** | Yes | B3LYP works well for carbon clusters |
+| **Boron clusters** | Probably not | PBE0 or TPSSh likely better |
+| **Gold/metal clusters** | **NO** | TPSSh best; PBE0 acceptable; B3LYP very poor |
+| **d-block metal clusters** | **NO** | Use pure functionals (BP86, TPSS, SCAN) |
+| **Metal lattice constants** | **NO** | PBE0 or HSE much better |
+| **High-precision thermochemistry** | Yes | Used in G4, G3//B3LYP, CBS-QB3 composite methods |
+| **Conformational search** | Only with D3 | `B3LYP-D3(BJ)` recommended as final optimization level |
+
+### Key details
+
+#### Weak interaction systems
+- B3LYP describes dispersion **completely incorrectly** — Ar₂ dimer has no minimum with B3LYP
+- Electrostatic-dominated weak interactions (e.g., water dimer H-bonds): B3LYP is qualitatively correct but quantitatively improved with D3
+- π-π stacking (e.g., DNA base pairs): B3LYP fails without D3 —碱基间距完全错乱
+- **Conclusion:** Never use bare B3LYP for any system where dispersion could affect structure. `B3LYP-D3(BJ)` is the standard.
+
+#### Large π-conjugated systems
+B3LYP's self-interaction error (SIE) causes:
+- **Overdelocalization** — forces fully coplanar conformations
+- **Bond length equalization** — makes all bonds in conjugation path equal
+
+Examples where B3LYP fails:
+- [18]annulene: B3LYP gives planar D6h with equal C-C bonds; wB97XD gives D3h with alternating bonds (matches CCSD and experiment)
+- Carbon ring (C₁₈): B3LYP gives equal C-C bonds; wB97XD gives alternating bonds (matches CCSD and AFM experiment)
+- [IF6]⁻: B3LYP gives Oh minimum; true structure is C3v (lone pair on iodine). wB97XD correctly gives C3v
+
+**Fix:** Use wB97XD or other high-HF% / range-separated functionals (CAM-B3LYP). See sobereva.com/282 for HF% table.
+
+#### Transition metal complexes
+- B3LYP is widely used but **mediocre** for metal-ligand bond lengths in benchmarks
+- TPSSh consistently outperforms in metal-ligand bond length tests
+- For metal-metal bonds (e.g., V₂ in [V(Cp)]₂Pn): B3LYP gives 2.994 Å vs. experimental 2.538 Å; BP86 gives 2.568 Å
+- If you only care about ligand chemistry (not metal coordination), B3LYP is fine
+
+#### Excited state optimization
+- Ground-state and excited-state optimization performance are uncorrelated
+- B3LYP fails for charge-transfer (CT) excited state optimization — gives qualitatively wrong geometries
+- **For CT or Rydberg states:** Must use range-separated hybrids (CAM-B3LYP, wB97X-D)
+- PBE0 and wB97XD generally perform well for excited states across the board
+
+#### Practical recommendation
+When recommending an optimization level to others or writing input templates, **default to `B3LYP-D3(BJ)`** rather than bare B3LYP. This adds universality — you don't need to know whether the user's system has weak interactions, and reviewers won't question it.
+
 ## Additional Resources
 
 For detailed keyword reference and failure patterns, consult:
 
 - **`references/opt-strategies.md`** — Detailed explanation of every optimization keyword
 - **`references/common-failures.md`** — Common failure patterns with before/after examples
+- **`references/b3lyp-appropriateness.md`** — When to use B3LYP for optimization: weak interactions, organic molecules, transition metals, large conjugated systems, excited states, transition states, clusters, and special cases ([IF6]-, annulenes, carbon ring). DFT-D3 necessity and benefits. B3LYP-D3(BJ) as universal default recommendation. Based on sobereva.com/557
