@@ -225,14 +225,14 @@ Key: dummy atom X1 at ring center, X2 along the C6 axis. All carbons at same `RC
 
 ```
 C
-O 1 RCO
-O 1 RCO 2 180.0
-X 1 1.0 2 90.0 3 90.0
+X 1 1.0
+O1 1 RCO 2 90.0
+O2 1 RCO 2 90.0 3 180.0
 
 RCO=1.16
 ```
 
-Key: dummy atom X placed off the linear axis (90° from both references) to provide a reference for dihedral angles, avoiding the undefined 180° dihedral problem.
+Key: dummy atom X is placed first (along Z axis from C). Both O atoms use X as angle reference with angle=90° (NOT 180° — old Gaussian rejects linear angles). The two O atoms are distinguished by dihedral: O2-C-X-O1 = 180° places O2 on the opposite side of C from O1. All bond angles are 90°, avoiding the forbidden 180° angle issue.
 
 ### Water dimer ((H2O)2) — Cs
 

@@ -4,60 +4,63 @@ Comprehensive Z-matrix examples for common symmetric molecules, dummy atom patte
 
 ## Linear molecules
 
-Linear molecules require dummy atoms because the dihedral angle is undefined when the bond angle is exactly 180°.
+Linear molecules require dummy atoms. **Old Gaussian rejects 180° bond angles**, so all angles must be 90° (or other non-180° values), with atoms on opposite sides distinguished by dihedral angles.
 
 ### CO2 — D∞h
 
 ```
 C
-O 1 RCO
-O 1 RCO 2 180.0
-X 1 1.0 2 90.0 3 90.0
+X 1 1.0
+O1 1 RCO 2 90.0
+O2 1 RCO 2 90.0 3 180.0
 
 RCO=1.16
 ```
 
-The dummy atom X is placed at 90° from both the C-O bond and the O-C-O axis, providing a reference for the dihedral angle definition. Both C=O bonds share `RCO`.
+Dummy atom X is placed first (along Z axis). Both O atoms use X as angle reference with angle=90° (NOT 180°). The two O atoms are distinguished by dihedral: O2-C-X-O1 = 180° places O2 on the opposite side.
 
 ### HCN — C∞v
 
 ```
-H
-C 1 RHC
-N 1 RCN 2 180.0
-X 1 1.0 2 90.0 3 90.0
+C
+X 1 1.0
+H 1 RCH 2 90.0
+N 1 RCN 2 90.0 3 180.0
 
-RHC=1.06
+RCH=1.06
 RCN=1.16
 ```
+
+C at origin, X dummy along Z. H and N both at 90° to X, distinguished by dihedral 180°.
 
 ### Acetylene (C2H2) — D∞h
 
 ```
 C1
 C2 1 RCC
-H3 1 RCH 2 180.0
-H4 2 RCH 1 180.0
-X5 1 1.0 2 90.0 3 0.0
-X6 2 1.0 1 90.0 4 0.0
+X3 1 1.0 2 90.0
+H4 1 RCH 2 90.0 3 0.0
+H5 2 RCH 1 90.0 3 180.0
 
 RCC=1.20
 RCH=1.06
 ```
 
-Two dummy atoms (X5, X6) placed on opposite sides of the axis to define the molecular plane.
+C1 at origin, C2 along Z axis. Dummy X3 placed at 90° to define the reference plane. H4 on C1 at 90° with dihedral 0°; H5 on C2 at 90° with dihedral 180° (opposite side). Both H-C-C angles are 180° by construction (the 90° angle is with respect to the dummy X3, not the C-C axis).
 
 ### N2O — C∞v
 
 ```
-N1
-N2 1 RNN
-O 1 RNO 2 180.0
-X 1 1.0 2 90.0 3 90.0
+N2
+X1 1 1.0
+N1 1 RNN 2 90.0
+O 1 RNO 2 90.0 3 180.0
 
 RNN=1.13
 RNO=1.19
 ```
+
+N2 (central N) at origin, X1 dummy along Z. N1 and O both at 90° to X1, distinguished by dihedral 180°.
 
 ## Trigonal planar molecules
 
