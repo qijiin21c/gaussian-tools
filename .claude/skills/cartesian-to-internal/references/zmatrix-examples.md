@@ -228,18 +228,17 @@ C4 1 RCC 2 90.0 3 72.0
 C5 1 RCC 2 90.0 4 72.0
 C6 1 RCC 2 90.0 5 72.0
 C7 1 RCC 2 90.0 6 72.0
-H8 3 RCH 2 ACH 4 180.0
-H9 4 RCH 3 ACH 5 180.0
-H10 5 RCH 4 ACH 6 180.0
-H11 6 RCH 5 ACH 7 180.0
-H12 7 RCH 6 ACH 3 180.0
+H8  3 RCH 1 180.0 2 0.0
+H9  4 RCH 1 180.0 3 0.0
+H10 5 RCH 1 180.0 4 0.0
+H11 6 RCH 1 180.0 5 0.0
+H12 7 RCH 1 180.0 6 0.0
 
 RCC=1.42
 RCH=1.08
-ACH=108.0
 ```
 
-All carbons at same `RCC` from center, 72° apart (360°/5).
+All carbons at same `RCC` from center, 72° apart (360°/5). All H atoms use X1 (ring center, atom 1) as angle reference with angle=180° for radial outward placement.
 
 ### Pyridine (C5H5N) — C2v
 
@@ -360,28 +359,27 @@ C4 1 RFeC 2 90.0 3 72.0
 C5 1 RFeC 2 90.0 4 72.0
 C6 1 RFeC 2 90.0 5 72.0
 C7 1 RFeC 2 90.0 6 72.0
-H8 3 RCH 2 ACH 4 180.0
-H9 4 RCH 3 ACH 5 180.0
-H10 5 RCH 4 ACH 6 180.0
-H11 6 RCH 5 ACH 7 180.0
-H12 7 RCH 6 ACH 3 180.0
+H8  3 RCH 1 180.0 2 0.0
+H9  4 RCH 1 180.0 3 0.0
+H10 5 RCH 1 180.0 4 0.0
+H11 6 RCH 1 180.0 5 0.0
+H12 7 RCH 1 180.0 6 0.0
 C13 1 RFeC 2 90.0 3 36.0
 C14 1 RFeC 2 90.0 4 36.0
 C15 1 RFeC 2 90.0 5 36.0
 C16 1 RFeC 2 90.0 6 36.0
 C17 1 RFeC 2 90.0 7 36.0
-H18 13 RCH 2 ACH 14 180.0
-H19 14 RCH 3 ACH 15 180.0
-H20 15 RCH 4 ACH 16 180.0
-H21 16 RCH 5 ACH 17 180.0
-H22 17 RCH 6 ACH 13 180.0
+H18 13 RCH 1 180.0 2 0.0
+H19 14 RCH 1 180.0 3 0.0
+H20 15 RCH 1 180.0 4 0.0
+H21 16 RCH 1 180.0 5 0.0
+H22 17 RCH 1 180.0 6 0.0
 
 RFeC=2.04
 RCH=1.08
-ACH=126.0
 ```
 
-The second Cp ring is offset by 36° (72°/2) for staggered D5d conformation. For eclipsed D5h, use 0° offset instead.
+The second Cp ring is offset by 36° (72°/2) for staggered D5d conformation. For eclipsed D5h, use 0° offset instead. Fe serves as ring center — all H atoms use Fe (atom 1) as angle reference with angle=180°.
 
 ## Hydrogen-bonded complexes
 

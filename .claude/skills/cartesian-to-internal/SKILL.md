@@ -208,19 +208,18 @@ C5 1 RCC 2 90.0 4 60.0
 C6 1 RCC 2 90.0 5 60.0
 C7 1 RCC 2 90.0 6 60.0
 C8 1 RCC 2 90.0 7 60.0
-H9 3 RCH 2 ACH 4 180.0
-H10 4 RCH 3 ACH 5 180.0
-H11 5 RCH 4 ACH 6 180.0
-H12 6 RCH 5 ACH 7 180.0
-H13 7 RCH 6 ACH 8 180.0
-H14 8 RCH 7 ACH 3 180.0
+H9  3 RCH 1 180.0 2 90.0
+H10 4 RCH 1 180.0 3 90.0
+H11 5 RCH 1 180.0 4 90.0
+H12 6 RCH 1 180.0 5 90.0
+H13 7 RCH 1 180.0 6 90.0
+H14 8 RCH 1 180.0 7 90.0
 
 RCC=1.39
 RCH=1.08
-ACH=120.0
 ```
 
-Key: dummy atom X1 at ring center, X2 along the C6 axis. All carbons at same `RCC` from center, 60° apart. All CH bonds share `RCH`, all angles share `ACH`.
+Key: dummy atom X1 at ring center, X2 along the C6 axis. All carbons at same `RCC` from center, 60° apart. **All H atoms use X1 (atom 1, ring center) as angle reference with angle=180°** — this places each H on the radial extension of C→center, pointing outward. Angle reference is NOT X2 (that would give wrong position).
 
 ### CO2 (linear) — D∞h (with dummy atom)
 
@@ -276,16 +275,15 @@ C5 1 RCC 2 90.0 4 60.0
 C6 1 RCC 2 90.0 5 60.0
 C7 1 RCC 2 90.0 6 60.0
 C8 1 RCC 2 90.0 7 60.0
-H9 3 RCH 2 ACH 4 180.0
-H10 4 RCH 3 ACH 5 180.0
-H11 5 RCH 4 ACH 6 180.0
-H12 6 RCH 5 ACH 7 180.0
-H13 7 RCH 6 ACH 8 180.0
-H14 8 RCH 7 ACH 3 180.0
+H9  3 RCH 1 180.0 2 90.0
+H10 4 RCH 1 180.0 3 90.0
+H11 5 RCH 1 180.0 4 90.0
+H12 6 RCH 1 180.0 5 90.0
+H13 7 RCH 1 180.0 6 90.0
+H14 8 RCH 1 180.0 7 90.0
 
 RCC 1.39
 RCH 1.08
-ACH 120.0
 ```
 
 ### Optimization with initial force constant calculation
