@@ -7,7 +7,14 @@
       "Edit(jobs/**)",
       "Bash(powershell -ExecutionPolicy Bypass -File scripts/run-gaussian.ps1 *)",
       "Bash(powershell *)",
-      "Bash(g16 *)"
+      "Bash(g16 *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git status)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(dir *)",
+      "Bash(ls *)"
     ],
     "deny": [
       "Bash(rm -rf *)"
