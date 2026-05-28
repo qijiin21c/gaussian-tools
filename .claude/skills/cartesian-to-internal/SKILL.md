@@ -1,7 +1,7 @@
 ---
 name: cartesian-to-internal
 description: This skill should be used when the user asks to "convert Cartesian to internal coordinates", "直角坐标转内坐标", "build Z-matrix", "Z-矩阵", "internal coordinate symmetry", "内坐标对称性", "maintain symmetry in Gaussian", "保持对称性 内坐标", "Z-matrix benzene", "Z-matrix dummy atom", "dummy atom X Gaussian", "Opt=Z-Matrix", "ModRedundant freeze Z-matrix", "symmetry-constrained optimization", "对称性约束优化", or mentions converting Cartesian coordinates to Z-matrix/internal coordinates in Gaussian while preserving or enforcing molecular symmetry.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Cartesian to Internal Coordinate Conversion with Symmetry
@@ -13,6 +13,59 @@ Convert Cartesian coordinates to Z-matrix (internal coordinates) in Gaussian, wi
 Gaussian does NOT maintain point-group symmetry by default during geometry optimization. Even if Gaussian detects high symmetry at the starting geometry, tiny numerical noise (floating-point precision, SCF convergence thresholds, DFT integration grids) breaks symmetry as optimization proceeds.
 
 **Z-matrix enforces symmetry mathematically:** all symmetry-equivalent bond lengths/angles/dihedrals share the same symbolic variable. During optimization, only independent variables change — symmetry is guaranteed because all equivalent parameters change together.
+
+## Automated symmetry detection with libmsym
+
+The `libmsym` Python library is installed and can automatically detect molecular point group symmetry from Cartesian coordinates.
+
+**Usage:**
+
+```bash
+# From command line with explicit atoms
+python scripts/detect_symmetry.py --atoms "C,0,0,0 H,1,0,0 H,0,1,0 H,0,0,1"
+
+# From a .gjf file
+python scripts/detect_symmetry.py --gjf jobs/molecule.gjf
+
+# From XYZ file
+python scripts/detect_symmetry.py molecule.xyz
+
+# Tight/loose tolerance
+python scripts/detect_symmetry.py --tight molecule.xyz   # threshold 1e-5
+python scripts/detect_symmetry.py --loose molecule.xyz   # threshold 1e-2
+```
+
+**Example output:**
+```
+Analyzing 12 atoms...
+Point group: D6h
+Order: 24
+Symmetry operations:
+  C2: 7
+  C3: 2
+  C6: 2
+  E: 1
+  S3: 2
+  S6: 2
+  i: 1
+  sigma_d: 3
+  sigma_h: 1
+  sigma_v: 3
+```
+
+**In Python:**
+```python
+from scripts.detect_symmetry import detect_symmetry, format_symmetry
+
+atoms = [('C', 0.0, 0.0, 0.0), ('H', 1.0, 1.0, 0.0), ...]
+ctx = detect_symmetry(atoms, threshold=1e-3)
+print(format_symmetry(ctx))
+```
+
+**Threshold guide:**
+- `--tight` (1e-5): Only very precise symmetry is detected. Use for optimized structures.
+- Default (1e-3): Standard tolerance. Works for most cases.
+- `--loose` (1e-2): Detects approximate symmetry. Use for experimental or rough coordinates.
 
 ## Pre-check: Do you need Z-matrix?
 

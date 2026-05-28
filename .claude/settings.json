@@ -14,7 +14,8 @@
       "Bash(git log *)",
       "Bash(git diff *)",
       "Bash(dir *)",
-      "Bash(ls *)"
+      "Bash(ls *)",
+      "Bash(python *)"
     ],
     "deny": [
       "Bash(rm -rf *)"
