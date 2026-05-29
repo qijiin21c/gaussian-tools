@@ -36,17 +36,18 @@ C at origin, X dummy along Z. H and N both at 90° to X, distinguished by dihedr
 ### Acetylene (C2H2) — D∞h
 
 ```
-C1
-C2 1 RCC
-X3 1 1.0 2 90.0
-H4 1 RCH 2 90.0 3 0.0
+X1
+C2 1 1.0
+C3 2 RCC 1 90.0
+X4 3 1.0 2 90.0 1 90.0
 H5 2 RCH 1 90.0 3 180.0
+H6 3 RCH 4 90.0 2 180.0
 
 RCC=1.20
 RCH=1.06
 ```
 
-C1 at origin, C2 along Z axis. Dummy X3 placed at 90° to define the reference plane. H4 on C1 at 90° with dihedral 0°; H5 on C2 at 90° with dihedral 180° (opposite side). Both H-C-C angles are 180° by construction (the 90° angle is with respect to the dummy X3, not the C-C axis).
+X1 at origin, C2 along Z axis. C3 at 90° to X1 (molecular axis along X at z=1). Second dummy X4 at 90° to C3 for H6 angle reference. Both H atoms use 90° angles with dihedral 180°, placing them collinear with the carbons (H-C-C = 180°).
 
 ### N2O — C∞v
 
@@ -72,7 +73,7 @@ F 1 RBF
 F 1 RBF 2 120.0
 F 1 RBF 2 120.0 3 180.0
 
-RBF=1.30
+RBF=1.31
 ```
 
 All three B-F bonds share `RBF`. The 120° step and 180° dihedral enforce D3h symmetry.
@@ -87,7 +88,7 @@ H 1 RCH 2 AHCO 3 180.0
 
 RCO=1.21
 RCH=1.11
-AHCO=121.8
+AHCO=121.5
 ```
 
 The two C-H bonds share `RCH`, and the 180° dihedral places them symmetrically about the C=O axis.
@@ -97,85 +98,74 @@ The two C-H bonds share `RCH`, and the 180° dihedral places them symmetrically 
 ### Methane (CH4) — Td
 
 ```
-C
-H 1 R
-H 1 R 2 TDA
-H 1 R 2 TDA 3 D120
-H 1 R 2 TDA 4 -D120
+H
+C 1 RCH
+H 2 RCH 1 AHCH
+H 2 RCH 1 AHCH 3 DA
+H 2 RCH 1 AHCH 4 DA
 
-R=1.085
-TDA=109.47
-D120=120.0
+RCH=1.087
+AHCH=109.5
+DA=120.0
 ```
 
-The tetrahedral angle TDA = arccos(-1/3) = 109.47°. The last H uses `-D120` to place it on the opposite side of the symmetry plane defined by C, H2, and H3.
+H at origin, C at RCH distance. The other three H atoms defined relative to C with tetrahedral angle AHCH=109.5°, last two use dihedral DA=120°.
 
 ### Carbon tetrachloride (CCl4) — Td
 
 ```
-C
-Cl 1 R
-Cl 1 R 2 TDA
-Cl 1 R 2 TDA 3 D120
-Cl 1 R 2 TDA 4 -D120
+Cl
+C 1 RCCl
+Cl 2 RCCl 1 ACClC
+Cl 2 RCCl 1 ACClC 3 DA
+Cl 2 RCCl 1 ACClC 4 DA
 
-R=1.77
-TDA=109.47
-D120=120.0
+RCCl=1.77
+ACClC=109.5
+DA=120.0
 ```
 
 ### Ammonium ion (NH4+) — Td
 
 ```
-N
-H 1 R
-H 1 R 2 TDA
-H 1 R 2 TDA 3 D120
-H 1 R 2 TDA 4 -D120
+H
+N 1 RNH
+H 2 RNH 1 AHNH
+H 2 RNH 1 AHNH 3 DA
+H 2 RNH 1 AHNH 4 DA
 
-R=1.03
-TDA=109.47
-D120=120.0
+RNH=1.03
+AHNH=109.5
+DA=120.0
 ```
 
 ## Pyramidal molecules
 
 ### Ammonia (NH3) — C3v
 
-With dummy atom on C3 axis:
-```
-N X 1 1.0
-H 2 NH 1 HNX
-H 2 NH 1 HNX 3 120.0
-H 2 NH 1 HNX 3 120.0 4 180.0
-
-NH=1.01
-HNX=107.0
-```
-
-Without dummy atom (using H-N-H angle directly):
 ```
 N
-H 1 NH
-H 1 NH 2 HNH
-H 1 NH 2 HNH 3 120.0
+H 1 RNH
+H 1 RNH 2 HNH
+H 1 RNH 2 HNH 3 120.0
 
-NH=1.01
+RNH=1.01
 HNH=107.0
 ```
 
-Note: The version without dummy atom may have convergence issues if the HNH angle approaches problematic values during optimization.
+N at origin, H at RNH. Two remaining H atoms relative to N with HNH=107°, dihedral steps of 120°.
 
 ### Phosphine (PH3) — C3v
 
 ```
-P X 1 1.0
-H 2 PH 1 HPX
-H 2 PH 1 HPX 3 120.0
-H 2 PH 1 HPX 3 120.0 4 180.0
+P
+H 1 RPH
+H 1 RPH 2 HPH
+H 1 RPH 2 HPH 3 dHPHH
 
-PH=1.42
-HPX=93.5
+RPH=1.42
+HPH=93.5
+dHPPH = 93.7 
 ```
 
 ## Octahedral molecules
@@ -183,43 +173,42 @@ HPX=93.5
 ### Sulfur hexafluoride (SF6) — Oh
 
 ```
-S
-X1 1 1.0
-X2 1 1.0 2 90.0
-F 1 RSF 2 90.0 3 0.0
-F 1 RSF 2 90.0 3 180.0
-F 1 RSF 2 90.0 4 90.0
-F 1 RSF 2 90.0 4 270.0
-F 1 RSF 2 0.0
-F 1 RSF 2 180.0
+F
+S 1 RSF
+F 2 RSF 1 180.0
+F 2 RSF 1 90.0 3 0.0
+F 2 RSF 1 90.0 3 90.0
+F 2 RSF 1 90.0 3 180.0
+F 2 RSF 1 90.0 3 270.0
 
 RSF=1.56
 ```
 
-Two dummy atoms (X1, X2) define the coordinate axes. Six F atoms placed at equal distance along ±X, ±Y, ±Z.
+S at RSF from F1. F3 opposite F1 (180°). F4-F7 in equatorial plane at 90° with 90° dihedral steps.
 
 ## Planar ring systems
 
 ### Cyclopropane (C3H6) — D3h
 
 ```
-X1
-X2 1 1.0
-C3 1 RCC 2 90.0
-C4 1 RCC 2 90.0 3 120.0
-C5 1 RCC 2 90.0 4 120.0
-H6 3 RCH 2 ACH 4 180.0
-H7 3 RCH 2 ACH2 5 0.0
-H8 4 RCH 3 ACH 6 180.0
-H9 4 RCH 3 ACH2 5 0.0
-H10 5 RCH 4 ACH 8 180.0
-H11 5 RCH 4 ACH2 3 0.0
+C1
+C2 1 RCC
+C3 1 RCC 2 ACC
+H4 1 RCH 2 ACH 3 DA
+H5 1 RCH 2 ACH 3 -DA
+H6 2 RCH 1 ACH 3 DA
+H7 2 RCH 1 ACH 3 -DA
+H8 3 RCH 1 ACH 2 DA
+H9 3 RCH 1 ACH 2 -DA
 
 RCC=1.51
 RCH=1.08
-ACH=115.0
-ACH2=115.0
+ACC=60.0
+ACH=117.82
+DA=107.74
 ```
+
+C1 at origin, C2 along X axis, C3 in XZ plane (Gaussian Z-matrix convention). All H atoms use adjacent C as angle reference with ACH=122.6° (gives H-C-H=114.8°). **Critical: dihedrals must be 180° apart (DA=107.7 and DB=287.7) to place H atoms on opposite sides of the ring plane.** C1's H pair: DA/DB, C2's H pair: DB/DA (alternating), C3's H pair: DA/DB. This gives 3H above and 3H below the carbon plane, D3h staggered symmetry.
 
 ### Cyclopentadienyl anion (C5H5-) — D5h
 
@@ -237,7 +226,7 @@ H10 5 RCH 1 180.0 4 0.0
 H11 6 RCH 1 180.0 5 0.0
 H12 7 RCH 1 180.0 6 0.0
 
-RCC=1.42
+RCC=1.38
 RCH=1.08
 ```
 
@@ -252,7 +241,6 @@ C3 2 RCC 1 ACCN
 C4 3 RCC 2 ACC 1 0.0
 C5 4 RCC 3 ACC 2 0.0
 C6 5 RCC 4 ACC 3 0.0
-C6 1 RNC 5 ACCN 4 0.0
 H7 2 RCH 1 AHCC 3 180.0
 H8 3 RCH 2 AHCC 4 180.0
 H9 4 RCH 3 AHCC 5 180.0
@@ -273,36 +261,43 @@ Note: Pyridine has C2v symmetry (mirror plane through N and para-C). The two ort
 
 ### Naphthalene (C10H8) — D2h
 
+**Critical: fused rings require one ring-closing atom per ring.** C6 closes to C1 (left ring) and C10 closes to C9 (right ring closure through C3). C9 uses C8 for distance with D1=0° to keep planarity; C10 uses C9 for distance with A2 (closing angle) and D2=180°.
+
 ```
 C1
-C2 1 RCCa
-C3 2 RCCb 1 ACC1
-C4 3 RCCa 2 ACC2 1 0.0
-C5 4 RCCb 3 ACC1 2 0.0
-C6 5 RCCa 4 ACC2 3 0.0
-C7 1 RCCb 6 ACC1 2 0.0
-C8 7 RCCa 1 ACC2 6 0.0
-C9 8 RCCb 7 ACC1 1 0.0
-C10 9 RCCa 8 ACC2 7 0.0
-C10 3 RCCb 9 ACC1 4 0.0
-H11 2 RCH 1 AHCC 3 180.0
-H12 3 RCH 4 AHCC 2 0.0
-H13 5 RCH 4 AHCC 6 0.0
-H14 6 RCH 5 AHCC 7 0.0
-H15 8 RCH 7 AHCC 9 0.0
-H16 9 RCH 8 AHCC 10 0.0
-H17 10 RCH 9 AHCC 3 0.0
-H18 4 RCH 3 AHCC 5 0.0
+C2 1 R1
+C3 2 R1 1 A1
+C4 3 R1 2 A1 1 D1
+C5 4 R2 3 A1 2 D1
+C6 1 R2 5 A2 4 D2
+C7 2 R1 1 A1 3 D2
+C8 7 R2 2 A1 1 D2
+C9 8 R1 7 A1 2 D1
+C10 9 R2 3 A2 8 D2
+H11 1 RCH 6 -AH 2 D1
+H12 7 RCH 2 AH 1 D1
+H13 8 RCH 7 -AH 2 D1
+H14 9 RCH 8 -AH 7 D1
+H15 10 RCH 3 -AH 9 D1
+H16 4 RCH 3 -AH 2 D1
+H17 5 RCH 4 -AH 3 D1
+H18 6 RCH 1 -AH 5 D1
 
-RCCa=1.37
-RCCb=1.42
-RCH=1.08
-ACC1=120.0
-ACC2=120.0
-AHCC=120.0
+R1=1.4
+R2=1.37
+A1=120.0
+A2=30.0
+RCH=1.1
+AH=120.0
+D1=0.0
+D2=180.0
 ```
 
-Two types of C-C bonds (RCCa for outer ring bonds, RCCb for fusion bond).
+Key D2h symmetry features:
+- **Only 2 C-C bond types**: R1 (most bonds) and R2 (closing + alternating bonds). All equivalent bonds share the same variable.
+- **Only 2 angles**: A1=120° for all regular C-C-C angles, A2=30° for both ring-closing atoms (C6 and C10).
+- **Mirror plane dihedrals**: -AH and AH for H atoms related by the horizontal mirror plane (atoms on opposite sides of the molecular plane don't exist here since it's planar, but -AH/AH distinguishes H atoms on opposite sides of the C-C bond axis within the plane).
+- **D2 alternation**: D2=180° for atoms placed on the opposite side of the molecular plane (C6, C7, C8, C10), keeping all atoms planar.
 
 ## Clusters and complexes
 
@@ -312,13 +307,14 @@ Two types of C-C bonds (RCCa for outer ring bonds, RCCb for fusion bond).
 P1
 P2 1 RPP
 P3 1 RPP 2 PPP
-P4 1 RPP 2 PPP 3 120.0
+P4 1 RPP 2 PPP 3 DA
 
 RPP=2.21
 PPP=60.0
+DA=70.5288
 ```
 
-The P-P-P angle in the tetrahedral P4 cage is 60°.
+All four P atoms at vertices of a regular tetrahedron. Each P-P-P angle is 60° (each face is equilateral). The dihedral for P4 is `arcsin(1/3) ≈ 19.471°`, NOT 120° — this is the angle that places P4 at the correct tetrahedral position equidistant from P1, P2, and P3.
 
 ### B12H12(2-) — Ih (icosahedral, simplified)
 
@@ -352,37 +348,45 @@ The 180° dihedrals enforce the trans (C2h) geometry.
 
 ### Ferrocene (Fe(C5H5)2) — D5d (staggered) or D5h (eclipsed)
 
+**Critical: the two Cp rings must be on opposite sides of Fe.** All carbons use Fe as bond reference and X1 as angle reference. Upper ring uses angle A1 = 180 - θ (places ring at z < 0), lower ring uses angle A2 = θ (places ring at z > 0). For staggered D5d, lower ring dihedrals are offset by 36°; for eclipsed D5h, use 0° offset. θ is computed from geometry: θ = arcsin(RCC/(2·sin(36°)·RFeC)) ≈ 35.72°.
+
+**All lower ring dihedrals reference C2 (atom 3)** — not successive upper ring atoms — to ensure correct 72° spacing around the ring.
+
+**H atoms must be coplanar with their Cp rings** (same z as their C atoms, pointing radially outward). H atoms use Fe as angle reference and X1 as dihedral reference. All H atoms share the same angle AH = 90 + θ ≈ 125.72°. Upper ring H: D = 0°; lower ring H: D = 180°.
+
 For staggered (D5d) conformation:
 ```
 Fe
 X1 1 1.0
-X2 1 1.0 2 90.0
-C3 1 RFeC 2 90.0
-C4 1 RFeC 2 90.0 3 72.0
-C5 1 RFeC 2 90.0 4 72.0
-C6 1 RFeC 2 90.0 5 72.0
-C7 1 RFeC 2 90.0 6 72.0
-H8  3 RCH 1 180.0 2 0.0
-H9  4 RCH 1 180.0 3 0.0
-H10 5 RCH 1 180.0 4 0.0
-H11 6 RCH 1 180.0 5 0.0
-H12 7 RCH 1 180.0 6 0.0
-C13 1 RFeC 2 90.0 3 36.0
-C14 1 RFeC 2 90.0 4 36.0
-C15 1 RFeC 2 90.0 5 36.0
-C16 1 RFeC 2 90.0 6 36.0
-C17 1 RFeC 2 90.0 7 36.0
-H18 13 RCH 1 180.0 2 0.0
-H19 14 RCH 1 180.0 3 0.0
-H20 15 RCH 1 180.0 4 0.0
-H21 16 RCH 1 180.0 5 0.0
-H22 17 RCH 1 180.0 6 0.0
+C2 1 RFeC 2 A1
+C3 1 RFeC 2 A1 3 72.0
+C4 1 RFeC 2 A1 4 72.0
+C5 1 RFeC 2 A1 5 72.0
+C6 1 RFeC 2 A1 6 72.0
+H7  3 RCH 1 AH 2 0.0
+H8  4 RCH 1 AH 2 0.0
+H9  5 RCH 1 AH 2 0.0
+H10 6 RCH 1 AH 2 0.0
+H11 7 RCH 1 AH 2 0.0
+C12 1 RFeC 2 A2 3 36.0
+C13 1 RFeC 2 A2 3 108.0
+C14 1 RFeC 2 A2 3 180.0
+C15 1 RFeC 2 A2 3 252.0
+C16 1 RFeC 2 A2 3 324.0
+H17 13 RCH 1 AH 2 180.0
+H18 14 RCH 1 AH 2 180.0
+H19 15 RCH 1 AH 2 180.0
+H20 16 RCH 1 AH 2 180.0
+H21 17 RCH 1 AH 2 180.0
 
 RFeC=2.04
 RCH=1.08
+A1=144.28
+A2=35.72
+AH=125.72
 ```
 
-The second Cp ring is offset by 36° (72°/2) for staggered D5d conformation. For eclipsed D5h, use 0° offset instead. Fe serves as ring center — all H atoms use Fe (atom 1) as angle reference with angle=180°.
+For eclipsed (D5h) conformation, change the lower ring dihedrals from 36/108/180/252/324 to 0/72/144/216/288. The upper ring C2-C6 and lower ring C12-C16 each form regular pentagons (C-C = 1.40 Å) with Fe-C = 2.04 Å. Ring separation = 2 × RFeC × cos(θ) ≈ 3.31 Å. All H atoms are coplanar with their respective Cp rings (same z as their parent C).
 
 ## Hydrogen-bonded complexes
 
@@ -408,30 +412,29 @@ AHOH2=104.5
 
 ```
 O1
-C2 1 ROC
-O3 2 RCO 1 AOCO
-H4 2 RCH 1 ACHC 3 180.0
-O5 2 RCOH 1 ACOH 3 0.0
-H6 5 ROHH 2 AOH 3 180.0
-O7 1 ROC 2 AOCO 6 180.0
-C8 7 ROC 1 AOCO 2 180.0
-O9 8 RCO 7 AOCO 1 180.0
-H10 8 RCH 7 ACHC 9 0.0
-O11 8 RCOH 7 ACOH 1 0.0
-H12 11 ROHH 8 AOH 9 0.0
+C2 1 RCO
+O3 2 RCOH 1 AOCO
+H4 2 RCH 1 AHC 3 DHC
+H5 3 ROH 2 ACOH 1 0.0
+O6 1 ROO 2 AOO 3 0.0
+C7 6 RCO 1 AOO 2 180.0
+O8 7 RCOH 6 AOCO 1 0.0
+H9 7 RCH 6 AHC 8 180.0
+H10 8 ROH 7 ACOH 6 0.0
 
-ROC=1.34
 RCO=1.20
-RCH=1.08
 RCOH=1.34
-ROHH=0.97
+RCH=1.08
+ROH=0.97
+ROO=3.1763
 AOCO=123.0
-ACHC=117.0
-ACOH=112.0
-AOH=107.0
+AHC=117.0
+ACOH=107.0
+AOO=86.1446
+DHC=-180.0
 ```
 
-Both monomers share all variables (C2h symmetry: the two monomers are equivalent and related by inversion).
+Both monomers share all internal variables (C2h symmetry: the two monomers are equivalent and related by inversion through the center point). The H-bond geometry: H5···O6 = 1.70 Å, H10···O1 = 1.70 Å, O3···O6 = 2.67 Å, O3-H5···O6 = 180°, O8-H10···O1 = 180°. ROO and AOO are derived from the H-bond geometry rather than being independent parameters.
 
 ## Tips for building complex Z-matrices
 

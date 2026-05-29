@@ -150,35 +150,36 @@ AHOH=104.5
 
 Key: both O-H bonds share `ROH`, ensuring C2 symmetry.
 
-### Ammonia (NH3) — C3v (with dummy atom on C3 axis)
+### Ammonia (NH3) — C3v
 
 ```
-N X 1 1.0
-H 2 NH 1 HNX
-H 2 NH 1 HNX 3 120.0
-H 2 NH 1 HNX 3 120.0 4 180.0
+H
+N 1 RNH
+H 2 RNH 1 HNH
+H 2 RNH 1 HNH 3 120.0
+H 2 RNH 1 HNH 3 120.0 4 180.0
 
-NH=1.01
-HNX=107.0
+RNH=1.01
+HNH=107.0
 ```
 
-Key: dummy atom X defines the C3 axis through N. All NH bonds share `NH`, all angles share `HNX`, dihedral steps are 120°.
+Key: H at origin, N at RNH distance. The other three H atoms are defined relative to N (atom 2) with H-N-H angle=107°. Dihedral steps of 120° enforce C3v symmetry, with 180° placing the last H on the opposite side.
 
-### Methane (CH4) — Td (with dummy atoms)
+### Methane (CH4) — Td
 
 ```
-C
-H 1 R
-H 1 R 2 TDA
-H 1 R 2 TDA 3 D120
-H 1 R 2 TDA 4 -D120
+H
+C 1 RCH
+H 2 RCH 1 AHCH
+H 2 RCH 1 AHCH 3 DA
+H 2 RCH 1 AHCH 4 DA
 
-R=1.085
-TDA=109.47
-D120=120.0
+RCH=1.087
+AHCH=109.5
+DA=120.0
 ```
 
-Key: tetrahedral angle (109.47°) is shared. The last H uses `-D120` to place it on the opposite side of the symmetry plane.
+Key: H at origin, C placed at RCH distance. The other three H atoms are defined relative to C (atom 2) with the tetrahedral angle AHCH=109.5°. The last two H atoms use dihedral DA=120° to place them at the correct tetrahedral positions.
 
 ### Ethylene (C2H4) — D2h
 
@@ -220,6 +221,20 @@ RCH=1.08
 ```
 
 Key: dummy atom X1 at ring center, X2 along the C6 axis. All carbons at same `RCC` from center, 60° apart. **All H atoms use X1 (atom 1, ring center) as angle reference with angle=180°** — this places each H on the radial extension of C→center, pointing outward. Angle reference is NOT X2 (that would give wrong position).
+
+### Acetylene (C2H2) — D∞h
+
+```
+H1
+C2 1 RCH
+C3 2 RCC 1 180.0
+H4 3 RCH 2 180.0
+
+RCC=1.20
+RCH=1.06
+```
+
+Key: simple linear chain H-C-C-H. The two H-C-C angles are 180°, which is allowed for newer Gaussian versions. If you get a "Linear angle" error, use the dummy atom approach with two dummies placed off-axis.
 
 ### CO2 (linear) — D∞h (with dummy atom)
 
@@ -328,6 +343,19 @@ Construct Z-matrix where:
 | Using `Opt=ModRedundant` freeze with Z-matrix but no `Opt=Z-Matrix` | Freezes are ignored | Add `Opt=Z-Matrix` to route section |
 | DFT grid noise breaking symmetry | Tiny imaginary frequencies after opt | Use `Int=UltraFine` with tight optimization |
 | Over-constrained system | "NVar < NDOF" error | Reduce fixed variables; need NVar = 3N-6 (or 3N-5 for linear) |
+
+## Z-matrix structure validation
+
+Before outputting a Z-matrix, verify each atom has the correct number of parameters:
+
+| Atom # | Required parameters | Format |
+|--------|--------------------|--------|
+| 1 | None | `Atom1` |
+| 2 | Bond length only | `Atom2 1 R` |
+| 3 | Bond length + angle | `Atom3 2 R 1 A` |
+| 4+ | Bond length + angle + dihedral | `Atom4 3 R 2 A 1 D` |
+
+This is a hard constraint: the Nth atom can reference at most N-1 previously defined atoms, so it can have at most 3 internal coordinates (R, A, D). A Z-matrix that gives a dihedral to atom 2 or 3, or omits a dihedral from atom 4+, is invalid and will be rejected by Gaussian.
 
 ## Converting existing Cartesian coordinates
 
