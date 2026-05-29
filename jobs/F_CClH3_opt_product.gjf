@@ -1,0 +1,14 @@
+%nprocshared=4
+%chk=F_CClH3_opt_product.chk
+#p opt freq b3lyp/6-31+g(d) empiricaldispersion=gd3bj
+
+F- + CH3Cl IRC endpoint opt - product side (Reverse Pt 15)
+
+-1 1
+ C                  0.007002    1.224358    0.000000
+ Cl                -0.001008   -1.941694    0.000000
+ H                 -1.028527    0.882173    0.000000
+ H                  0.521192    0.885469    0.897748
+ H                  0.521192    0.885469   -0.897747
+ F                 -0.003301    2.659837    0.000000
+

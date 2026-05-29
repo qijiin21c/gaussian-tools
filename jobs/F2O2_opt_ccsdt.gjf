@@ -1,0 +1,19 @@
+%chk=F2O2_opt_ccsdt.chk
+%mem=16GB
+%nprocshared=4
+#p CCSD(T)/aug-cc-pVDZ opt
+
+F2O2 CCSD(T)/aug-cc-pVTZ geometry optimization (C2 symmetry)
+Starting from B3LYP-D3(BJ)/def2TZVPP optimized geometry
+
+0 1
+O
+O   1   rOO
+F   1   rOF   2   aFOO
+F   2   rOF   1   aFOO   3   dFOOF
+
+rOO = 1.2271
+rOF = 1.5212
+aFOO = 109.231
+dFOOF = 87.9196
+

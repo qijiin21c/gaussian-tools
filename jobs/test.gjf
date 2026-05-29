@@ -1,0 +1,15 @@
+  # B3LYP/6-311+G** Opt=Z-Matrix
+
+  H2O2 C2 symmetry optimization
+
+  0 1
+  O1
+  O2 1 ROO
+  H3 1 ROH 2 AOOH
+  H4 2 ROH 1 AOOH 3 DHOOH
+
+  ROO=1.474
+  ROH=0.95
+  AOOH=94.8
+  DHOOH=115.5
+

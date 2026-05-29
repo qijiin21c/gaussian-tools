@@ -1,0 +1,14 @@
+%nprocshared=4
+%chk=F_CClH3_ts_c3v.chk
+# RHF/6-31G(d) opt=(ts,calcfc,noeigentest,maxstep=5) symm=(loose,follow)
+
+F- + CH3Cl SN2 TS - C-F=2.5, C-Cl=2.0 (reactant side)
+
+-1 1
+ C                  0.000000    0.000000    0.000000
+ Cl                 0.000000    0.000000    2.000000
+ F                  0.000000    0.000000   -2.500000
+ H                  0.000000    1.024400   -0.300000
+ H                  0.887100   -0.512200   -0.300000
+ H                 -0.887100   -0.512200   -0.300000
+

@@ -1,0 +1,6 @@
+%nprocshared=4
+%chk=F_CClH3_irc.chk
+#p IRC=(restart,LQA,maxpoints=30,stepsize=15) b3lyp/6-31+g(d) empiricaldispersion=gd3bj
+
+F- + CH3Cl SN2 IRC restart - extend forward direction
+

@@ -1,0 +1,14 @@
+%nprocshared=4
+%chk=F_CClH3_opt_reactant.chk
+#p opt freq b3lyp/6-31+g(d) empiricaldispersion=gd3bj
+
+F- + CH3Cl IRC endpoint opt - reactant side (Forward Pt 2)
+
+-1 1
+ C                 -0.000003    0.302478    0.000000
+ Cl                -0.000015   -1.619291    0.000000
+ H                 -1.040971    0.601783    0.000000
+ H                  0.520487    0.601754    0.901507
+ H                  0.520487    0.601754   -0.901507
+ F                  0.000029    2.693679    0.000000
+

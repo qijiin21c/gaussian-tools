@@ -1,0 +1,14 @@
+%nprocshared=4
+%chk=F_CClH3_ts_b3lyp.chk
+#p opt=(ts,calcfc,noeigentest) freq b3lyp/6-31+g(d) empiricaldispersion=gd3bj
+
+F- + CH3Cl SN2 TS search - B3LYP-D3(BJ)/6-31+G(d)
+
+-1 1
+C                  0.000000   -0.000008   -0.347033
+Cl                 0.000000    0.000007    1.615146
+H                  0.000000    1.053843   -0.540335
+H                  0.912649   -0.526926   -0.540336
+H                 -0.912649   -0.526926   -0.540336
+F                  0.000000    0.000009   -2.447039
+

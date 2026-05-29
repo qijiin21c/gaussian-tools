@@ -1,0 +1,14 @@
+%nprocshared=4
+%chk=F_CClH3_irc.chk
+#p IRC=(calcfc,LQA,maxpoints=20,stepsize=15) b3lyp/6-31+g(d) empiricaldispersion=gd3bj
+
+F- + CH3Cl SN2 IRC from B3LYP-D3(BJ)/6-31+G(d) TS - verify connects R->P
+
+-1 1
+C                  0.000000    0.425318    0.000000
+Cl                -0.000014   -1.645775    0.000000
+H                 -1.059888    0.616769    0.000000
+H                  0.529954    0.616761    0.917886
+H                  0.529954    0.616761   -0.917886
+F                  0.000024    2.619553    0.000000
+

@@ -1,0 +1,18 @@
+%chk=F2O2_opt_m062x.chk
+%mem=16GB
+%nprocshared=12
+#p M062X/def2TZVPP opt=(tight) freq scf=xqc
+
+F2O2 M06-2X geometry optimization (C2 symmetry)
+
+0 1
+O
+O   1   rOO
+F   1   rOF   2   aFOO
+F   2   rOF   1   aFOO   3   dFOOF
+
+rOO = 1.217
+rOF = 1.575
+aFOO = 109.5
+dFOOF = 87.5
+

@@ -1,0 +1,16 @@
+%nprocshared=4
+%chk=F_CClH3_scan_fc.chk
+# RHF/6-31G(d) opt=(modredundant,maxstep=5) nosymm
+
+F- + CH3Cl SN2 - F- approaches C from back of C-Cl, maintain C3v for CH3
+
+-1 1
+ C                  0.000000    0.000000    0.000000
+ Cl                 0.000000    0.000000    1.780000
+ H                  0.000000    1.080000   -0.359978
+ H                  0.935300   -0.540000   -0.359978
+ H                 -0.935300   -0.540000   -0.359978
+ F                  0.000000    0.000000   -3.500000
+
+B 1 6 S 10 -0.2
+

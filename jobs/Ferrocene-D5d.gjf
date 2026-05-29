@@ -1,0 +1,37 @@
+%chk=C:\Users\QiJi\Documents\12.CC\Gaussian\jobs\C6H6.chk
+# hf/3-21g
+
+Title Card Required
+
+0 1
+Fe
+X1   1  dist      
+X2   1  dist   2  180.0
+C1   2  rCp    1  90.0   3   0.0
+C2   2  rCp    1  90.0   4   a72
+C3   2  rCp    1  90.0   5   a72
+C4   2  rCp    1  90.0   6   a72
+C5   2  rCp    1  90.0   7   a72
+C6   3  rCp    1  90.0   4   a36
+C7   3  rCp    1  90.0   9   a72
+C8   3  rCp    1  90.0   10   a72
+C9   3  rCp    1  90.0   11   a72
+C10  3  rCp    1  90.0   12   a72
+H1   4  rCH    2  180.0  1   0.0
+H2   5  rCH    2  180.0  1   0.0
+H3   6  rCH    2  180.0  1   0.0
+H4   7  rCH    2  180.0  1   0.0
+H5   8  rCH    2  180.0  1   0.0
+H6   9  rCH    3  180.0  1   0.0
+H7   10  rCH    3  180.0  1   0.0
+H8   11  rCH    3  180.0  1   0.0
+H9   12  rCH    3  180.0  1   0.0
+H10  13  rCH    3  180.0  1   0.0
+
+dist=1.65
+rCp=1.21
+rCH=1.08
+a72=72.0
+a36=36.0
+
+

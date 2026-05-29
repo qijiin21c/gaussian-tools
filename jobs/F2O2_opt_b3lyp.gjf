@@ -1,0 +1,18 @@
+%chk=F2O2_opt_b3lyp.chk
+%mem=16GB
+%nprocshared=12
+#p B3LYP/def2TZVPP empiricaldispersion=GD3BJ opt=(tight) freq scf=xqc
+
+F2O2 B3LYP-D3(BJ) geometry optimization (C2 symmetry)
+
+0 1
+O
+O   1   rOO
+F   1   rOF   2   aFOO
+F   2   rOF   1   aFOO   3   dFOOF
+
+rOO = 1.217
+rOF = 1.575
+aFOO = 109.5
+dFOOF = 87.5
+
